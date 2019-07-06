@@ -1,6 +1,9 @@
 package ultralist
 
-import "sort"
+import (
+	"sort"
+	// "fmt"
+)
 
 // TodoList is the struct of a list with several todos.
 type TodoList struct {
@@ -127,20 +130,18 @@ func (t *TodoList) IndexOf(todoToFind *Todo) int {
 	return -1
 }
 
-// ByDate is the by date struct of a todo.
-type ByDate []*Todo
+// ByID is the by ID struct of a todo.
+type ByID []*Todo
 
-func (a ByDate) Len() int      { return len(a) }
-func (a ByDate) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
-func (a ByDate) Less(i, j int) bool {
-	t1Due := a[i].CalculateDueTime()
-	t2Due := a[j].CalculateDueTime()
-	return t1Due.Before(t2Due)
+func (a ByID) Len() int      { return len(a) }
+func (a ByID) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a ByID) Less(i, j int) bool {
+	return a[i].ID < a[j].ID
 }
 
 // Todos is a sorted list of todos.
 func (t *TodoList) Todos() []*Todo {
-	sort.Sort(ByDate(t.Data))
+	sort.Sort(ByID(t.Data))
 	return t.Data
 }
 

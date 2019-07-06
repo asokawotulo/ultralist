@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/ultralist/ultralist/ultralist"
+	"github.com/asokawotulo/ultralist/ultralist"
 )
 
 var (

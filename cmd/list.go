@@ -73,6 +73,23 @@ var listArchivedCmd = &cobra.Command{
 }
 
 var (
+	listIncompleteCmdDesc    = "Lists all incomplete todos"
+	listIncompleteCmdExample = `  ulralist list incomplete
+  Lists incomplete all todos.`
+	listIncompleteCmdLongDesc = listArchivedCmdDesc + "."
+)
+
+var listIncompleteCmd = &cobra.Command{
+	Use:     "incomplete",
+	Aliases: []string{"ic"},
+	Long:    listIncompleteCmdLongDesc,
+	Short:   listIncompleteCmdDesc,
+	Run: func(cmd *cobra.Command, args []string) {
+		ultralist.NewApp().ListTodos("incomplete " + strings.Join(args, " "))
+	},
+}
+
+var (
 	listCompletedCmdDesc    = "Lists all completed todos"
 	listCompletedCmdExample = `  ulralist list completed (tod|today)
   Lists all todos that were completed today.
@@ -155,6 +172,7 @@ var listOverdueCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.AddCommand(listArchivedCmd)
+	listCmd.AddCommand(listIncompleteCmd)
 	listCmd.AddCommand(listCompletedCmd)
 	listCmd.AddCommand(listNotesCmd)
 	listCmd.AddCommand(listOverdueCmd)

@@ -15,6 +15,7 @@ func NewFilter(todos []*Todo) *TodoFilter {
 // Filter filters todos based on patterns.
 func (f *TodoFilter) Filter(input string) []*Todo {
 	f.Todos = f.filterArchived(input)
+	f.Todos = f.filterIncomplete(input)
 	f.Todos = f.filterCompleted(input)
 	f.Todos = f.filterPrioritized(input)
 	f.Todos = f.filterProjects(input)
@@ -42,6 +43,16 @@ func (f *TodoFilter) filterArchived(input string) []*Todo {
 	}
 
 	return f.getUnarchived()
+}
+
+func (f *TodoFilter) filterIncomplete(input string) []*Todo {
+
+	completedRegex, _ := regexp.Compile(`incomplete.*$`)
+	if completedRegex.MatchString(input) {
+		return f.getIncomplete()
+	}
+
+	return f.Todos
 }
 
 func (f *TodoFilter) filterCompleted(input string) []*Todo {
@@ -107,6 +118,16 @@ func (f *TodoFilter) getArchived() []*Todo {
 	var ret []*Todo
 	for _, todo := range f.Todos {
 		if todo.Archived {
+			ret = append(ret, todo)
+		}
+	}
+	return ret
+}
+
+func (f *TodoFilter) getIncomplete() []*Todo {
+	var ret []*Todo
+	for _, todo := range f.Todos {
+		if !todo.Completed {
 			ret = append(ret, todo)
 		}
 	}
